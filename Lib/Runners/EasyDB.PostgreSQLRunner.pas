@@ -121,9 +121,9 @@ begin
   if AInsertMode then
   begin
     LvScript :=
-    IfThen(((not FDbName.IsEmpty) and (not FSchema.IsEmpty)),
-    'INSERT INTO ' + FSchema + '.' + FDbName + '.' + 'easydbversioninfo',
-    'INSERT INTO ' + FDbName + '.' + 'easydbversioninfo')
+    IfThen(not FSchema.IsEmpty,
+    'INSERT INTO ' + FSchema + '.' + 'easydbversioninfo',
+    'INSERT INTO easydbversioninfo')
     + '(' + #10
     + '    version,' + #10
     + '    appliedon,' + #10
@@ -141,7 +141,9 @@ begin
   else
   begin
     LvScript :=
-    'UPDATE library.easydbversioninfo' + #10
+    IfThen(not FSchema.IsEmpty,
+    'UPDATE ' + FSchema + '.' + 'easydbversioninfo',
+    'UPDATE easydbversioninfo')  + #10
     + 'SET    appliedon       = NOW(),' + #10
     + '       author          = CONCAT(author, '' -- '', ' + LvAuthor.QuotedString + '),' + #10
     + '       description     = CONCAT(description, '' -- '', ' + LvDescription.QuotedString + ')' + #10
