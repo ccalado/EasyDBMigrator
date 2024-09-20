@@ -119,6 +119,7 @@ begin
 
   FConnection.Close;
   FConnection.Free;
+  FInstance := nil;
   inherited;
 end;
 
